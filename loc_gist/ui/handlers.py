@@ -28,12 +28,10 @@ def _run_query_and_append(chain, msg, chat_box):
 
     chat_box.after(0, log_ai, response, chat_box)
 
-def select_db(db_name, chat_box):
-    log_sys(f"Connecting {db_name}...", chat_box)
+def select_db(db_name):
     chain, status = chain_db(db_name)
-    log_sys(f"{status}", chat_box)
 
-    return chain
+    return chain, status
 
 
 def log_user(msg, chat_box):
