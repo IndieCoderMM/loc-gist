@@ -22,7 +22,7 @@ def init_model(db_path, model="qwen3:4b"):
     return rag_chain
 
 
-def init_chain(vector_store, model="qwen3:4b", ctx_window=4096):
+def init_chain(vector_store, model="qwen3:4b", ctx_window=8192):
     """Creates the RAG chain."""
     # Initialize the LLM
     llm = ChatOllama(

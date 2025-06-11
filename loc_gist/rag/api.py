@@ -1,11 +1,10 @@
 from loc_gist.rag.core import init_model, init_db
 from .db_helper import get_db_path, create_db, is_db_exists, get_all_dbs
 
-
 def chain_db(db_name):
     """Initialize the RAG chain with the specified database."""
     if not is_db_exists(db_name):
-        return f"Database {db_name} does not exist."
+        return None, "Database does not exist."
 
     db_path = get_db_path(db_name)
 
@@ -18,11 +17,7 @@ def chain_db(db_name):
 
 def query_rag(chain, question):
     """Queries the RAG chain and return response."""
-    print("\nQuerying RAG chain...")
-    print(f"Question: {question}")
     response = chain.invoke(question)
-    print("\nResponse:")
-    print(response)
     return response
 
 

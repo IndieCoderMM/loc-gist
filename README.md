@@ -39,6 +39,6 @@ venv\Scripts\activate  # Windows
 
 3. Install necessary libraries using pip
 ```bash
-pip install langchain langchain-community langchain-core langchain-ollama chromadb pypdf python-dotenv tiktoken
+pip install langchain langchain-community langchain-core langchain-ollama chromadb pypdf ttkbootstrap
 ```
 

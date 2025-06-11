@@ -1,7 +1,7 @@
-import tkinter as tk
-from tkinter import filedialog
+import threading
+from tkinter import filedialog, END
+
 from loc_gist.rag.api import query_rag, index_db, chain_db
-from tkinter import END
 
 
 def open_file(chat_box):
@@ -10,26 +10,38 @@ def open_file(chat_box):
         return
     db_name = path.split("/")[-1].split(".")[0]
     db_path = index_db(path, db_name)
-    append_user_msg(f"📂 Database '{db_name}' created at {db_path}", chat_box)
-
+    log_sys(f"Indexed {db_name} at {db_path}", chat_box)
 
 def send_message(chain, msg, chat_box):
-    append_user_msg(msg, chat_box)
-    response = query_rag(chain, msg)
-    append_ai_msg(response, chat_box)
+    log_user(msg, chat_box)
+    log_sys("Processing your query...", chat_box)
+    threading.Thread(target=_run_query_and_append, args=(chain, msg, chat_box)).start()
 
+def _run_query_and_append(chain, msg, chat_box):
+    response = query_rag(chain, msg)
+    # Extract thoughts which are between <think></think>
+
+    if "<think>" in response and "</think>" in response:
+        thoughts = response.split("<think>")[1].split("</think>")[0]
+        response = response.replace(f"<think>{thoughts}</think>", "").strip()
+        log_sys(f"Thoughts: {thoughts}", chat_box)
+
+    chat_box.after(0, log_ai, response, chat_box)
 
 def select_db(db_name, chat_box):
-    chat_box.insert(tk.END, "\nInitializing model...")
+    log_sys(f"Connecting {db_name}...", chat_box)
     chain, status = chain_db(db_name)
-    chat_box.insert(tk.END, status)
+    log_sys(f"{status}", chat_box)
 
     return chain
 
 
-def append_user_msg(msg, chat_box):
-    chat_box.insert(END, f"\n😍 You: {msg}")
+def log_user(msg, chat_box):
+    chat_box.insert(END, f"\nYou: {msg}")
 
 
-def append_ai_msg(msg, chat_box):
-    chat_box.insert(END, f"\n🧠 AI: {msg}")
+def log_ai(msg, chat_box):
+    chat_box.insert(END, f"\nAI: {msg}")
+
+def log_sys(msg, chat_box):
+    chat_box.insert(END, f"\n[SYS]: {msg}")

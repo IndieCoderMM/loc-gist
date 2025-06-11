@@ -23,17 +23,12 @@ def get_vector_store(embedding, dir):
 def index_docs(chunks, embedding, dir):
     """Indexes document chunks into the Chroma vector store."""
     print(f"Indexing {len(chunks)} chunks...")
-    # Use from_documents for initial creation.
-    # This will overwrite existing data if the directory exists
-    # but isn't a valid Chroma DB.
-    # For incremental updates, initialize Chroma first
-    # and use vectorstore.add_documents().
     vectorstore = Chroma.from_documents(
         documents=chunks,
         embedding=embedding,
         persist_directory=dir
     )
-    vectorstore.persist()  # Ensure data is saved
+    # vectorstore.persist()  # Auto-persisted
     print(f"Indexing complete. Data saved to: {dir}")
     return vectorstore
 
