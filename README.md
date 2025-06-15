@@ -4,7 +4,19 @@
 
 - [Tutorial](https://www.freecodecamp.org/news/build-a-local-ai/)
 
-## Ollama Setup 🦙
+## Features
+
+- 🛡️Privacy: No data leaves your system.
+
+- 💵 No Cost: Run locally without API fees.
+
+- 🖥️Offline Capability: Process documents without internet access.
+
+- ⚙️ Customization: Use any LLM, embedding, and adapt to your needs
+
+## Getting Started
+
+### Ollama Setup 🦙
 
 **1. Install Ollama**
 - Windows: Download the installer from the Ollama website: https://ollama.com/download
@@ -24,7 +36,7 @@
   - Start the Ollama server with: `ollama serve <model_tag>`
   - Access the model via API at `http://localhost:11434`
 
-## Python Setup 🐍
+### Python Setup 🐍
 
 1. Create a virtual environment to manage dependencies
 ```bash

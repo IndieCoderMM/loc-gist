@@ -1,0 +1,17 @@
+{
+  "exclude": ["**/__pycache__"],
+  "ignore": ["**/__pycache__"],
+  "include": ["**/*.py"],
+  "pythonPlatform": "Linux",
+  "pythonVersion": "3.10",
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false,
+  "reportAttributeAccessIssue": "warning",
+  "reportGeneralTypeIssue": "warning",
+  "typeCheckingMode": "basic",
+  "venvPath": ".",
+  "venv": ".venv",
+  "extraPaths": [
+    "./.venv/lib/python3.10/site-packages"
+  ]
+}
