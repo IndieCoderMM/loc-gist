@@ -4,6 +4,8 @@
 
 - [Tutorial](https://www.freecodecamp.org/news/build-a-local-ai/)
 
+![Screenshot](./screenshot.png)
+
 ## Features
 
 - 🛡️Privacy: No data leaves your system.
@@ -54,3 +56,7 @@ venv\Scripts\activate  # Windows
 pip install langchain langchain-community langchain-core langchain-ollama chromadb pypdf ttkbootstrap
 ```
 
+4. Run the app
+```bash
+python -m loc_gist
+```
