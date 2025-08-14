@@ -8,7 +8,7 @@ from .pdf_reader import load_documents, split_documents
 from .embedding import get_embedding, get_vector_store, index_docs
 
 
-def init_model(db_path, model="qwen3:4b"):
+def init_model(db_path, model="qwen3:4b", temperature: float = 0.0, ctx_window: int = 8192, top_k: int = 3, max_tokens: int | None = None):
     embedding_function = get_embedding()
 
     if not os.path.exists(db_path):
@@ -17,26 +17,31 @@ def init_model(db_path, model="qwen3:4b"):
         print("Loading existing DB...")
         vector_store = get_vector_store(embedding_function, db_path)
 
-    rag_chain = init_chain(vector_store, model)
+    rag_chain = init_chain(vector_store, model=model, temperature=temperature, ctx_window=ctx_window, top_k=top_k, max_tokens=max_tokens)
 
     return rag_chain
 
 
-def init_chain(vector_store, model="qwen3:4b", ctx_window=8192):
+def init_chain(vector_store, model: str = "qwen3:4b", temperature: float = 0.0, ctx_window: int = 8192, top_k: int = 3, max_tokens: int | None = None):
     """Creates the RAG chain."""
     # Initialize the LLM
-    llm = ChatOllama(
+    llm_kwargs = dict(
         model=model,
-        temperature=0,  # Lower temperature for more factual RAG answers
-        num_ctx=ctx_window  # IMPORTANT: Set context window size
+        temperature=temperature,  # Lower temperature => more factual
+        num_ctx=ctx_window,       # Context window size
     )
+    if max_tokens is not None:
+        # Limit generation length if provided
+        llm_kwargs["num_predict"] = max_tokens
+
+    llm = ChatOllama(**llm_kwargs)
     print(
-        f"Initialized ChatOllama: {model}, context window: {ctx_window}")
+        f"Initialized ChatOllama: {model}, temperature: {temperature}, context window: {ctx_window}, max_tokens: {max_tokens}")
 
     # Create the retriever
     retriever = vector_store.as_retriever(
         search_type="similarity",  # Or "mmr"
-        search_kwargs={'k': 3}  # Retrieve top 3 relevant chunks
+        search_kwargs={'k': int(top_k) if top_k else 3}  # Retrieve top-k relevant chunks
     )
     print("Retriever initialized.")
 

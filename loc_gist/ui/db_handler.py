@@ -8,12 +8,25 @@ class DbHandler:
         self.chain = None
         self.active_db = None
         self.list = []
+        self.settings_provider = None
+
+    def set_settings_provider(self, provider):
+        self.settings_provider = provider
+
+    def _get_settings(self):
+        try:
+            if callable(self.settings_provider):
+                return self.settings_provider() or {}
+        except Exception:
+            pass
+        return {}
 
     def activate(self, db_name: str):
         if self.active_db == db_name:
             return False
 
-        self.chain, status = chain_db(db_name)
+        settings = self._get_settings()
+        self.chain, status = chain_db(db_name, settings=settings)
 
         self.active_db = db_name
         return True
