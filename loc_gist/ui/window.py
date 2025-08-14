@@ -9,7 +9,7 @@ from .layout import Layout
 class Window(ttk.Window):
     def __init__(self, theme="cyborg"):
         super().__init__(themename=theme)
-        self.title("Local RAG System")
+        self.title("LocGist - RAG System")
         self.geometry("800x620")
         self.db_handler = DbHandler()
         self.layout = Layout(self)

@@ -21,11 +21,12 @@ class Layout(ttk.Frame):
         main.grid_rowconfigure(1, weight=1)
         main.grid_columnconfigure(0, weight=1)
 
+        self.status_bar = StatusBar(parent=main)
+        self.status_bar.pack(expand=True, fill=tk.X, padx=10, pady=4)
+
         self.tab_window = TabWindow(parent=main, window=window, bootstyle="secondary")
         self.tab_window.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
 
-        self.status_bar = StatusBar(parent=main)
-        self.status_bar.pack(expand=True, fill=tk.X, padx=10, pady=4)
 
 class TabWindow(ttk.Notebook):
     def __init__(self, window: "Window", parent=None, **kwargs):
@@ -111,11 +112,6 @@ class ChatBox(ttk.Frame):
         super().__init__(parent)
         self.window = window
 
-        self.search_bar = ttk.Frame(self)
-        self.search_bar.pack(side=tk.TOP, expand=True, fill=tk.X, padx=10)
-        self.search_bar.grid_rowconfigure(0, weight=1)
-        self.search_bar.grid_columnconfigure(0, weight=1)
-
         self.text_box = ScrolledText(self, wrap=tk.WORD, state=tk.DISABLED)
         self.text_box.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
         # tags for chat bubbles
@@ -124,6 +120,13 @@ class ChatBox(ttk.Frame):
         self.text_box.text.tag_configure("user_msg", lmargin1=40, lmargin2=40, rmargin=10, spacing3=6, justify="right")
         self.text_box.text.tag_configure("bot_msg", lmargin1=10, lmargin2=10, rmargin=40, spacing3=6, justify="left")
         self.text_box.text.tag_configure("time", foreground="#6c757d", font=("Helvetica", 8))
+
+
+        self.search_bar = ttk.Frame(self)
+        self.search_bar.pack(side=tk.TOP, expand=True, fill=tk.X, padx=10)
+        self.search_bar.grid_rowconfigure(0, weight=1)
+        self.search_bar.grid_columnconfigure(0, weight=1)
+
 
         self.input = ttk.Entry(self.search_bar, bootstyle="primary")
         self.input.pack(expand=True, fill=tk.X, side=tk.LEFT)
